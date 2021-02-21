@@ -8,9 +8,18 @@
     "start": "next start"
   },
   "dependencies": {
+    "commitizen": "^4.2.3",
     "next": "10.0.7",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "styled-components": "^5.2.1"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

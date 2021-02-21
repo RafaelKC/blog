@@ -23,22 +23,6 @@ export default function Home() {
             p="Como waste you time with me">
               The WET Codebase
             </PostCard>
-
-            <PostCard 
-            href="http://localhost:3000/" 
-            rel="bookmark" 
-            small="July 13, 2020 @ 1min read" 
-            p="Como waste you time with me">
-              The WET Codebase
-            </PostCard>
-
-            <PostCard 
-            href="http://localhost:3000/" 
-            rel="bookmark" 
-            small="July 13, 2020 @ 1min read" 
-            p="Como waste you time with me">
-              The WET Codebase
-            </PostCard>
       </main>
 
       <Footer />

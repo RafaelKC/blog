@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 
 const theme = {
   colors: {
-    primary: '#008520',
+    primary: '#008960',
   },
   spacing: [0, 4, 8, 12, 16, 20]
 };

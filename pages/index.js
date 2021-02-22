@@ -1,38 +1,59 @@
-import styled, {createGlobalStyle} from 'styled-components';
+import FunGlobalStyle from '../styles/GlobalStyle/GlobalStyle';
 import React from 'react';
-import Link from 'next/link'
+import getAllPosts from '../scripts/blog/getAllPosts';
+import getAllRepos from '../scripts/blog/getAllRepos';
 
 import Head from '../scr/infra/componentes/Head/index.js';
 import Header from '../scr/patterns/Header/index.js';
 import Footer from '../scr/patterns/Footer/index.js';
-import Typography from '../scr/components/fundation/Typography/index.js'
 import PostCard from '../scr/patterns/PostCard/index';
 
+export default function Home({ reposAndPost }) {
 
-export default function Home() {
   return (
     <div>
-        <GlobalStyled />
-        <Head title="Home - Blog RafaelKC" />
-        <Header />
-      <main>
-          <PostCard 
-            href="http://localhost:3000/" 
-            rel="bookmark" 
-            small="July 13, 2020 @ 1min read" 
-            p="Como waste you time with me">
-              The WET Codebase
-            </PostCard>
-      </main>
+      <GlobalStyle />
+      <Head title="Home - Blog do Rafael" />
 
-      <Footer />
+      <Header className="headerContainer">
+        <img src="https://github.com/RafaelKC.png" />
+        <h1>
+          Blog do Rafael
+        </h1>
+      </Header>
+
+      <section className="postContainer">
+        <h1>Posts</h1>
+        {reposAndPost.map((post) => (
+
+           <PostCard
+              GlobalStyle={GlobalStyle}
+              Style={GlobalStyle}
+              articleKey={post.metadata.title}
+              href={post.metadata.slug}
+              linkText={post.metadata.title}
+              p={`${post.metadata.excerpt} @ ${post.metadata.tags}`}
+              img={post.metadata.img} />
+
+        ))}
+      </section>
+      <Footer className="footer"> Todos os direitos reservados © Rafael Kauã Chicovis </Footer>
     </div>
   )
 }
 
+export async function getStaticProps() {
+  const post  = getAllPosts();
+  const repos = await getAllRepos();
 
-const GlobalStyled = createGlobalStyle`
-* {
-    font-family: sans-serif;
-}   
-`;
+  const reposAndPost = [].concat(post, repos);
+
+  return {
+    props: {
+      post,
+      reposAndPost,
+    }
+  }
+}
+
+const GlobalStyle = FunGlobalStyle();

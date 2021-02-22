@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Footer({ title }) {
+function Footer({ children, className }) {
     return (
-        <footer>
-            This is the footer
+        <footer className={className}>
+            {children}
         </footer>
     );
 }

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function Header({ children }) {
+function Header({ children, className }) {
     return(
-        <header>
-            This is the Header
+        <header className={className}>
+            {children}
         </header>
     );
 }

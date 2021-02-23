@@ -3,7 +3,7 @@ import grayMatter from 'gray-matter';
 import remark from 'remark'; 
 import remarkHTML from 'remark-html';
 
-export default function getAllPosts() {
+export default function getAllPosts(contentShare=false) {
     const  allPostFileNames = fs.readdirSync('./_posts')
     
     const posts = allPostFileNames.map((filename) => {
@@ -13,15 +13,32 @@ export default function getAllPosts() {
         const htmlContent = remark()
         .use(remarkHTML)
         .processSync(content)
-        .toString();
+        .toString(); 
 
-        return {
-            metadata: {
-                ...metadata, 
-                slug: filename.replace('.md', '')
-            },
-            content: htmlContent
+        var slug;
+
+        if (metadata.slug != undefined) {
+            slug = metadata.slug;
+        } else {
+            slug = `/posts/${filename.replace('.md', '')}`
         }
+
+        if (contentShare) {
+            return {
+                metadata: {
+                    ...metadata, 
+                    slug: slug
+                },
+                content: htmlContent
+            }    
+        } else {
+            return {
+                metadata: {
+                    ...metadata, 
+                    slug: slug
+                },
+            }
+        }        
     });
 
     return posts;

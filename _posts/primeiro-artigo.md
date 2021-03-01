@@ -1,6 +1,6 @@
 ---
 title: 'Primeiro post, se inscreve no canal'
-date: '2021-02-22T21:33:33.658Z'
+date: '2021-03-01T23:11:01.265Z'
 tags: '-1 min'
 excerpt: 'Resumo do primeiro post'
 author: 'Rafael Chicovis'

@@ -1,14 +1,14 @@
 import FunGlobalStyle from '../styles/GlobalStyle/GlobalStyle';
 import React from 'react';
-import getAllHomePosts from '../scripts/blog/getAllHomePosts.js'
+import { getAllPosts } from '../scripts/blog/getAllPosts.js'
 
 import Head from '../scr/infra/componentes/Head/index.js';
 import Header from '../scr/patterns/Header/index.js';
 import Footer from '../scr/patterns/Footer/index.js';
 import PostCard from '../scr/patterns/PostCard/index';
 
-export default function Home({ reposAndPost }) {
-  
+export default function Home({ posts }) {
+
   return (
     <div>
       <GlobalStyle />
@@ -23,7 +23,7 @@ export default function Home({ reposAndPost }) {
 
       <section className="postContainer">
         <h1>Posts</h1>
-        {reposAndPost.map((post) => (
+        {posts.map((post) => (
 
            <PostCard
               GlobalStyle={GlobalStyle}
@@ -42,11 +42,11 @@ export default function Home({ reposAndPost }) {
 }
 
 export const getStaticProps = async () => {
-  const reposAndPost = await getAllHomePosts();
+  const posts = await getAllPosts(['title', 'slug', 'tags', 'excerpt', 'img', 'date']);
 
   return {
     props: {
-      reposAndPost
+      posts
     },
     revalidate: 10,
   }

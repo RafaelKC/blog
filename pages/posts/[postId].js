@@ -1,25 +1,20 @@
-import React from 'react';
-import fs from 'fs';
-import grayMatter from 'gray-matter';
-import remark from 'remark'; 
-import remarkHTML from 'remark-html';
+import React, { cloneElement } from 'react';
+import toHTML from '../../scripts/markdonw/toHtml.js';
+import {getAllPosts, getPost} from '../../scripts/blog/getAllPosts'
+import getAllPaths from '../../scripts/blog/getAllPaths.js'
 
-export default function post({ content, metadata }) {
+
+export default function post({ post }) {
     
-    const htmlContent = remark()
-    .use(remarkHTML)
-    .processSync(content)
-    .toString()
-
     return (
         <div style={{
             margin: 'auto',
             maxWidth: '600px',
             fontFamily: 'sans-serif'
           }}>
-            <h1>{ metadata.title }</h1>
-            <p>{ metadata.author } @ { metadata.date }</p>
-            <div dangerouslySetInnerHTML={{__html: htmlContent }}>    
+            <h1>{ post.metadata.title }</h1>
+            <p>{ post.metadata.author } @ { post.metadata.date }</p>
+            <div dangerouslySetInnerHTML={{__html: post.content }}>    
             </div>
         </div>
     )
@@ -27,38 +22,30 @@ export default function post({ content, metadata }) {
 
 export async function getStaticProps({ params }) {
     
-    const postId = params.postId;
-    const fileComponent = fs.readFileSync(`./_posts/${postId}.md`, 'utf-8');
-    const {content, data: metadata} = grayMatter(fileComponent);
+    const post = getPost(params.slug, [
+        'title',
+        'date',
+        'author',
+        'slug',
+        'content',
+    ]);
+
+    post.content = await toHTML(post.content);
+
+    console.log(post);
 
     return {
-        props: {
-            content: content,
-            metadata: metadata,
-        }
+        props: { post }
     }
 } 
 
 export async function getStaticPaths() {
+    const paths = await getAllPaths();
 
-    const allPostFileNames = fs.readdirSync('./_posts');
-
-    var paths = [];
-    const postsFileName = allPostFileNames.map((filename) => {
-        const fileContent = fs.readFileSync(`./_posts/${filename}`, 'utf-8');
-        const {content, data: metadata} = grayMatter(fileContent);
-
-        if (metadata.slug == undefined) {
-            paths.push({
-                params: {
-                    postId: `${filename.replace('.md', '')}`
-                }
-            })
-        } 
-    })
+    console.log(paths);
 
     return {
-        paths,
+        paths: {...paths},
         fallback: false,
     };
 }

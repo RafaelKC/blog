@@ -1,7 +1,6 @@
 import FunGlobalStyle from '../styles/GlobalStyle/GlobalStyle';
 import React from 'react';
-import getAllPosts from '../scripts/blog/getAllPosts';
-import getAllRepos from '../scripts/blog/getAllRepos';
+import getAllHomePosts from '../scripts/blog/getAllHomePosts.js'
 
 import Head from '../scr/infra/componentes/Head/index.js';
 import Header from '../scr/patterns/Header/index.js';
@@ -9,7 +8,7 @@ import Footer from '../scr/patterns/Footer/index.js';
 import PostCard from '../scr/patterns/PostCard/index';
 
 export default function Home({ reposAndPost }) {
-
+  
   return (
     <div>
       <GlobalStyle />
@@ -42,19 +41,15 @@ export default function Home({ reposAndPost }) {
   )
 }
 
-export async function getStaticProps() {
-  const post  = getAllPosts();
-  const repos = await getAllRepos();
-
-  const reposAndPost = [].concat(post, repos);
+export const getStaticProps = async () => {
+  const reposAndPost = await getAllHomePosts();
 
   return {
     props: {
-      post,
-      reposAndPost,
+      reposAndPost
     },
-    revalidate:  10,
+    revalidate: 10,
   }
 }
 
-const GlobalStyle = FunGlobalStyle();
+const GlobalStyle = FunGlobalStyle(); 

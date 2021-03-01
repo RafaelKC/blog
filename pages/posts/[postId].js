@@ -11,17 +11,18 @@ export default function post({ content, metadata }) {
     .processSync(content)
     .toString()
 
-    const html = `
-    <html lang="pt"> 
-    ${htmlContent.contents}
-    </html>
-    `
-
-    return (`
-        <html lang="pt"> 
-        ${htmlContent}
-        </html>
-    `);
+    return (
+        <div style={{
+            margin: 'auto',
+            maxWidth: '600px',
+            fontFamily: 'sans-serif'
+          }}>
+            <h1>{ metadata.title }</h1>
+            <p>{ metadata.author } @ { metadata.date }</p>
+            <div dangerouslySetInnerHTML={{__html: htmlContent }}>    
+            </div>
+        </div>
+    )
 }
 
 export async function getStaticProps({ params }) {

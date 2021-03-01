@@ -1,8 +1,9 @@
 ---
 title: 'Desliza a cortina em cima do like'
-date: '2020-03-16'
+date: '2021-02-22T21:33:33.658Z'
 tags: '-1 min'
 excerpt: 'Resumo do segundo post'
+author: 'Rafael Chicovis'
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. At imperdiet dui accumsan sit amet nulla facilisi morbi tempus. Praesent elementum facilisis leo vel fringilla. Congue mauris rhoncus aenean vel. Egestas sed tempus urna et pharetra pharetra massa massa ultricies.

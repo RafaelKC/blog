@@ -3,6 +3,7 @@ import fs from 'fs';
 import grayMatter from 'gray-matter';
 import remark from 'remark'; 
 import remarkHTML from 'remark-html';
+import FunGlobalStyle from '../../styles/GlobalStyle/GlobalStyle.js';
 
 export default function post({ content, metadata }) {
     
@@ -17,7 +18,8 @@ export default function post({ content, metadata }) {
             maxWidth: '600px',
             fontFamily: 'sans-serif'
           }}>
-            <h1>{ metadata.title }</h1>
+            <GlobalStyle />
+            <h1 >{ metadata.title }</h1>
             <p>{ metadata.author } @ { metadata.date }</p>
             <div dangerouslySetInnerHTML={{__html: htmlContent }}>    
             </div>
@@ -62,3 +64,5 @@ export async function getStaticPaths() {
         fallback: false,
     };
 }
+
+const GlobalStyle = FunGlobalStyle();

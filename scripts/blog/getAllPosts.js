@@ -1,45 +1,47 @@
 import fs from 'fs';
-import grayMatter from 'gray-matter';
-import remark from 'remark'; 
-import remarkHTML from 'remark-html';
+import { join } from 'path';
+import matter from 'gray-matter';
+import getAllRepos from './getAllRepos.js'
 
-export default function getAllPosts(contentShare=false) {
-    const  allPostFileNames = fs.readdirSync('./_posts')
-    
-    const posts = allPostFileNames.map((filename) => {
-        const fileContent =  fs.readFileSync(`./_posts/${filename}`,  'utf-8');
-        const { content, data: metadata } = grayMatter(fileContent);
+const postDirectory = join(process.cwd(), '_posts');
 
-        const htmlContent = remark()
-        .use(remarkHTML)
-        .processSync(content)
-        .toString(); 
+function getMarkdownFiles() {
+    return fs.readdirSync(postDirectory);
+}
 
-        var slug;
+export function getPost(slugOrFilename, fields = []) {
+    const slug = slugOrFilename.replace('.md', '')
+    const directory = join(postDirectory, `${ slug }.md`)
+    const fileContent = fs.readFileSync(directory, 'utf8');
+    const { data, content } = matter(fileContent);
+    const slugFinal = `posts/${slug}/`
 
-        if (metadata.slug != undefined) {
-            slug = metadata.slug;
-        } else {
-            slug = `/posts/${filename.replace('.md', '')}`
-        }
+    const post = {
+        metadata: {}
+    }
 
-        if (contentShare) {
-            return {
-                metadata: {
-                    ...metadata, 
-                    slug: slug
-                },
-                content: htmlContent
-            }    
-        } else {
-            return {
-                metadata: {
-                    ...metadata, 
-                    slug: slug
-                },
-            }
-        }        
-    });
+    fields.forEach(field => {
+        if(field === 'content') post[field] = content;
+        if(field === 'slug') post.metadata[field] = slugFinal;
+        if(data[field]) post.metadata[field] = data[field];
+    })
 
-    return posts;
+    return post
+}
+
+export async function getAllPosts(fields, wantRepos = true) {
+    const slugs = getMarkdownFiles();
+    const posts = slugs
+    .map(slug => getPost(slug, fields))
+    .sort((a, b) => new Date(b.metadata.date) - new Date(a.metadata.date));
+
+    const repos = await getAllRepos();
+
+    const allPost = [].concat(posts, repos)
+
+    if(wantRepos) {
+        return allPost;
+    } else {
+        return posts;
+    }
 }
